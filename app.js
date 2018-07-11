@@ -1,11 +1,11 @@
+//app.js
+
 const express = require('express');
+const passport = require('./passport');
+
 const app = express();
-const db = require('./db');
+const auth = require('./routes/auth');
+const user = require('./routes/user');
 
-const UserController = require('./user/UserController');
-const AuthController = require('./auth/AuthController');
-
-app.use('/users', UserController);
-app.use('/api/auth', AuthController);
-
-module.exports = app;
+app.use('/auth', auth);
+app.use('/user', passport.authenticate('jwt', {session: false}), user);

@@ -1,2 +1,0 @@
-# jwtTest
-Using JWT example.
