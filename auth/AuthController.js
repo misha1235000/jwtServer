@@ -35,12 +35,12 @@ router.post('/register', (req, res) => {
 router.get('/', VerifyToken, (req, res, next) => {
     let token = req.headers['authorization'];
     if (!token) {
-        return res.status(401).send({ auth: false, message: 'No token provided.' });
+        return res.status(401).send({ auth: false, message: 'No token provided.' }).redirect('/');
     }
 
     jwt.verify(token, config.secret, (err, decoded) => {
         if (err) {
-            return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+            return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' }).redirect('/');
         }
         
         User.findById(decoded.id, 
