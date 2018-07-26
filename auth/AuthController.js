@@ -25,15 +25,15 @@ router.post('/register', (req, res) => {
 
         // Create a token
         let token = jwt.sign({ id: user._id }, config.secret, {
-          expiresIn: 86400 // 24 Hours
+          expiresIn: 60 // 24 Hours
         })
 
         res.status(200).send({ auth: true, token: token });
     });
 });
 
-router.get('/test', VerifyToken, (req, res, next) => {
-    var token = req.headers['x-access-token'];
+router.get('/', VerifyToken, (req, res, next) => {
+    let token = req.headers['authorization'];
     if (!token) {
         return res.status(401).send({ auth: false, message: 'No token provided.' });
     }
@@ -44,7 +44,7 @@ router.get('/test', VerifyToken, (req, res, next) => {
         }
         
         User.findById(decoded.id, 
-        { password: 0 }, // projection
+        { password: 0, _id: 0, name: 0}, // projection
         (err, user) => {
             if (err) {
                 return res.status(500).send("There was a problem finding the user.");
